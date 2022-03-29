@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='首页'">
+<header th:replace="font/_fragments :: headerFragment(${title})">
+</header>
+<body>
+<!--导航栏-->
+<nav class="ui inverted gird-header" th:replace="font/_fragments :: menu(1)">
+
+</nav>
+
+<!--顶部图片-->
+<div class="m-bg-class_outer" style="width: 100%;height: 750px">
+    <img th:src="@{/pageStatic/images/backGround.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
+    <div class="m-bg-class_cover" align="center">
+        <div class="m-margin-top-maxx" align="center">
+            <img class="ui circular image" align="center" th:src="@{/pageStatic/images/me.png}" style="width: 150px;height: 150px;">
+        </div>
+        <div class="m-font-size-title-large" align="center">闽A青玉柳</div>
+
+        <div class="" align="center">
+            <a class="ui tencent circular icon button"><i class="user icon"></i></a>
+            <a href="#" class="ui wechat circular icon button"><i class="weixin icon"></i></a>
+            <a href="#" class="ui qq circular icon button"><i class="qq icon"></i></a>
+            <a href="https://gitee.com/chenzi_8129/blog" class="ui github circular icon button" data-content="点击跳转GitHub" data-position="bottom center"><i class="github icon"></i></a>
+            <a href="https://blog.csdn.net/weixin_45329433?spm=1000.2115.3001.5343" class="ui csdn circular icon button" data-content="点击跳转CSDN" data-position="bottom center"><i class="copyright outline icon"></i></a>
+            <a href="#" class="ui email circular icon button" data-content="812944458@qq.com" data-position="bottom center"><i class="envelope  icon"></i></a>
+        </div>
+
+        <div class="ui tencent-qr flowing popup transition hidden">
+            <img th:src="@{/pageStatic/images/zhifupay.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <div align="center">公众号</div>
+        </div>
+        <div class="ui wechat-qr flowing popup transition hidden">
+            <img th:src="@{/pageStatic/images/wechatpay.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <div align="center">微信</div>
+        </div>
+        <div class="ui qq-qr flowing popup transition hidden">
+            <img th:src="@{/pageStatic/images/qqGroup.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <div align="center">QQ</div>
+        </div>
+
+
+        <h3 class="m-font-size-text" align="center">欢迎来到我们的团队博客</h3>
+        <hr style="width: 30%">
+        <h5 class="m-font-size-text-init-title m-margin-top-large">小组人员</h5>
+        <h5 class="m-font-size-text-init-title">项目经理：陈梓</h5>
+        <h5 class="m-font-size-text-init-title">技术经理：李俊运</h5>
+        <h5 class="m-font-size-text-init-title">程序员：吴泽南 陈瑞华 林晓超</h5>
+<!--        <div id="waypoint" class="ui m-margin-top-large" align="center">
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==1} ? 'active'"><i class="home icon"></i>首页</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==2} ? 'active'"><i class="clone outline icon"></i>分类</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==4} ? 'active'"><i class="clock icon"></i>时间轴</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==5} ? 'active'"><i class="music icon"></i>音乐盒</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==6} ? 'active'"><i class="book icon"></i>留言板</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==7} ? 'active'"><i class="pencil alternate icon"></i>友人帐</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==8} ? 'active'"><i class="image icon"></i>照片墙</a>
+            <a href="#" class="ui circular icon button m-opacity-small m-item item m-mobile-hide m-index-btn" th:classappend="${n==9} ? 'active'"><i class="info icon"></i>关于我</a>
+        </div>-->
+        <div class="hiddenDiv"></div>
+    </div>
+
+</div>
+
+
+
+<!--最新推荐-->
+<div class="ui m-padded-tb-large">
+    <div class="ui m-container-small m-opacity">
+        <div class="ui secondary segment " align="center">
+            <i class="bookmark icon"></i>最新推荐
+        </div>
+    </div>
+    <div class="ui stackable m-container-mini m-opacity grid">
+        <div class="m-margin-tb-tiny four wide column" th:each="recommend:${recommends}">
+            <a th:href="@{/center/blog/(id=${recommend.id})}" class="class_outer" target="_blank">
+                <img th:src="${recommend.photo}" alt="" class="ui rounded image" style="width: 100%;height:201px;">
+                <span class="class_cover" >
+                     <h4 class="m-font-size-blog-text m-margin-tb-tiny" th:text="'浏览:'+${recommend.times}+'次 '+${recommend.title}"></h4>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="m-padded-tb-big animated fadeIn">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <!--博客内容-->
+            <div class="ui vertical segment">
+                <div class="ui m-container-small m-opacity">
+                    <div class="ui secondary segment " align="center">
+                        <i class="bookmark icon"></i>最新文章
+                    </div>
+                </div>
+                <!--博文列表-->
+                <div class="ui padded segment m-padded-tb-large m-opacity" th:each="article:${articles}">
+                    <div class="ui large aligned mobile reversed stackable grid">
+                        <!--博文信息-->
+                            <div class="eleven wide column ">
+                                <h3 class="ui header" ><a th:href="@{/center/blog/(id=${article.id})}" target="_blank" class="m-black" th:text="${article.title}">大圣，此去欲何?</a></h3>
+                                <p class="m-text m-margin-top-max" th:text="${article.descriptive}" id="doc-content">戴上金箍，没法爱你；放下金箍，没法保护你。我知道上天不会给我第二次机会，曾经我们说好的永远，原来也仅仅只有，十二画，而已。“大圣，此去欲何?”“踏南天，碎凌霄。”“若一去不回……”“便一去不回” 其实很多时候，我们都是有机会的，最后真正放弃的，是我们自己。......</p>
+                                <div class="ui m-margin-top-max grid">
+                                    <div class="eleven wide column">
+                                        <div class="ui mini horizontal link list">
+                                            <div class="item">
+                                                <img src="/pageStatic/images/me.jpg"  alt="" class="ui avatar image">
+                                                <div class="content"><a href="#" target="_blank" class="header" th:text="${article.name}">oneStar</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i><span th:text="${#dates.format(article.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-01-01</span>
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i> <span th:text="${article.times}">2222</span>
+                                            </div>
+                                            <div class="item">
+                                                <i class="comment outline icon"></i> <span th:text="${article.message}">2222</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right aligned five wide column">
+                                        <a th:each="atg:${atgs}" th:href="@{/types/toArticleTypeList/(tagId=${atg.tagId})}" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:if="${atg.articleId==article.id}" th:text="${atg.name}">好文</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <!--博文图片-->
+                        <div class="five wide column">
+                            <a th:href="@{/center/blog/(id=${article.id})}" target="_blank">
+                                <img th:src="${article.photo}" alt="" class="ui rounded image" style="width: 100%;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--分页-->
+            <div class="ui bottom attached segment m-opacity stackable grid">
+                <div class="three wide column" align="center">
+                    <a th:if="${page>1}" class="item" th:href="@{/(page=${page}-1)}">上一页</a>
+                </div>
+
+                <div class="ten wide column" align="center">
+                    <p> <span th:text="${page}"></span> /<span th:text="${total}"></span> </p>
+                </div>
+
+                <div class="three wide column" align="center">
+                    <a th:if="${page<total}" class="item"th:href="@{/(page=${page}+1)}" >下一页</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!--置顶图标-->
+<div class="m-padded-tb-large m-fixed m-right-bottom">
+    <a href="#" class="ui icon button"><i class="chevron up icon"></i> </a>
+</div>
+
+<br>
+<br>
+<br>
+
+<!--底部-->
+<div th:replace="font/_fragments :: footer">
+
+</div>
+
+
+<script th:src="@{/editormd/lib/jquery.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script th:src="@{/pageStatic/lib/waypoints/jquery.waypoints.min.js}"></script>
+
+<link rel="stylesheet" th:href="@{/editormd/css/editormd.preview.css}" />
+<script th:src="@{/editormd/lib/marked.min.js}"></script>
+<script th:src="@{/editormd/lib/prettify.min.js}"></script>
+<script th:src="@{/editormd/lib/raphael.min.js}"></script>
+<script th:src="@{/editormd/lib/underscore.min.js}"></script>
+<script th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
+<script th:src="@{/editormd/lib/flowchart.min.js}"></script>
+<script th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
+<script th:src="@{/editormd/js/editormd.js}"></script>
+
+<script type="text/javascript">
+    var testEditor;
+    $(function () {
+        testEditor = editormd.markdownToHTML("doc-content", {//注意：这里是上面DIV的id
+            htmlDecode: "style,script,iframe",
+            emoji: true,//开启表情
+            taskList: true,
+            tocm: true,
+            tex: true, // 默认不解析
+            flowChart: true, // 默认不解析
+            sequenceDiagram: true, // 默认不解析
+            codeFold: true
+        });});
+</script>
+<script th:replace="font/_fragments :: javascript"></script>
+</body>
+</html>
