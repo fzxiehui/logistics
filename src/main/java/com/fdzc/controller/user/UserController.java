@@ -1,13 +1,14 @@
 package com.fdzc.controller.user;
 
+
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "物流权限接口")
+@Api(tags = "用户权限接口")
 @RestController
-@RequestMapping("/logistics")
-@RequiresRoles("logistics")
-public class LogisticsController {
+@RequestMapping("/user")
+@RequiresRoles("user")
+public class UserController {
 }

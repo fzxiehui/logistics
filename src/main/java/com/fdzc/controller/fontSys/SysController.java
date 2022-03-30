@@ -16,7 +16,7 @@ public class SysController {
     @ApiOperation("去前台首页面")
     @RequestMapping({"/","/index","/index.html"})
     public String index(){
-        return "font/login/login";
+        return "font/index/user";
     }
 
 }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class LoginController {
     private RoleService roleService;
 
     @RequestMapping(path = "/unauthorized/{message}")
+    @ResponseBody
     public Result unauthorized(@PathVariable String message) throws UnsupportedEncodingException {
         return Result.fail(message);
     }
