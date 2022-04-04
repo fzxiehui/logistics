@@ -1,5 +1,6 @@
 package com.fdzc.pojo;
 
+
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -11,29 +12,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @ApiModel("用户实体类")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_user")
-public class User implements Serializable {
-    @ApiModelProperty("用户id")
+@TableName("tb_notice")
+public class Notice implements Serializable {
+
+    @ApiModelProperty("id")
     @TableId(type = IdType.AUTO)
     private Integer id;
-    @ApiModelProperty("用户姓名")
-    private String username;
-    @ApiModelProperty("用户密码")
-    private String password;
-    @ApiModelProperty("加密盐值")
-    private String salt;
-    @ApiModelProperty("jwt盐值")
-    private String jwtSecret;
-    @ApiModelProperty("电话")
-    private String phone;
-    @ApiModelProperty("激活状态")
-    private Integer status;
+    @ApiModelProperty("公告标题")
+    private String title;
+    @ApiModelProperty("公告内容")
+    private String content;
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -41,6 +34,8 @@ public class User implements Serializable {
     private Date createTime;
 
     @ApiModelProperty("逻辑删除")
+    @TableField(value = "deleted")
     private int deleted;
+
 
 }

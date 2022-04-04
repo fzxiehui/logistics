@@ -1,13 +1,12 @@
 package com.fdzc;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fdzc.mapper.PermissionMapper;
 import com.fdzc.mapper.RoleMapper;
-import com.fdzc.pojo.Permission;
-import com.fdzc.pojo.Role;
-import com.fdzc.pojo.User;
-import com.fdzc.service.PermissionService;
-import com.fdzc.service.RoleService;
-import com.fdzc.service.UserService;
+import com.fdzc.pojo.*;
+import com.fdzc.service.*;
+import com.fdzc.utils.Result;
+import com.github.pagehelper.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +33,12 @@ class SpringbootMSystemApplicationTests {
     @Autowired
     UserService userService;
 
+    @Autowired
+    NoticeService noticeService;
+
+    @Autowired
+    LogisticsService logisticsService;
+
 
     @Test
     void contextLoads() {
@@ -43,18 +48,18 @@ class SpringbootMSystemApplicationTests {
 
     @Test
     void test(){
-        System.out.println("============================");
-        List<Role> roles = roleMapper.getUserRolesByUserId(1);
-        System.out.println("=======================");
-        System.out.println(roles);
+        List<User> userList = userService.selectAll();
+        System.out.println(userList);
+        int i = userService.checkUserRoles(1);
+        System.out.println(i);
     }
 
     @Test
     void test2(){
-        System.out.println("============================");
-        List<Permission> permissionList = permissionMapper.selectPermissionByRoleId(1);
-        System.out.println("=======================");
-        System.out.println(1);
+        List<Logistics> logisticsList = logisticsService.selectLogistics(null);
+        String jsonString = JSONObject.toJSONString(logisticsList);
+        System.out.println(jsonString);
+        System.out.println("========================");
     }
 
 
@@ -86,7 +91,39 @@ class SpringbootMSystemApplicationTests {
 
     }
 
+    @Test
+    void test4(){
+        List<Notice> noticeList = noticeService.selectAllPage();
+        System.out.println(noticeList);
+        System.out.println("======================");
+        Result<List<Notice>> ok = Result.ok(noticeList);
+        System.out.println(ok);
+    }
+
+    @Test
+    void test5(){
+        Notice notice = new Notice();
+        notice.setId(4);
+        notice.setContent("s十多个撒大都市asdgasdgsdgsagsda");
+        notice.setTitle("修改");
+        int i = noticeService.updateNotice(notice);
+        System.out.println("=========="+i+"============");
+    }
+
+    @Test
+    void test6(){
+        Notice notice = new Notice();
+        notice.setContent("大厦是公dfshdfhdshdfhdh司的撒大dfhsddfgfdgdh噶的s十多sdhfdhdf个撒大都市asdgasdgsdgsagsda");
+        notice.setTitle("修山豆根时地 告士刁改");
+        int i = noticeService.addNotice(notice);
+        System.out.println("=========="+i+"============");
+    }
 
 
+    @Test
+    void test7(){
+        List<Logistics> logisticsList = logisticsService.selectLogistics("18930300365");
+        System.out.println(logisticsList);
+    }
 
 }

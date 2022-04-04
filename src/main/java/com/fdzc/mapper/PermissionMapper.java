@@ -1,5 +1,6 @@
 package com.fdzc.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fdzc.pojo.Permission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Mapper
 @Component
-public interface PermissionMapper {
+public interface PermissionMapper extends BaseMapper<Permission> {
 
     @Select("select tbp.id,tbp.permission_name,tbp.resource_url from tb_role tbr\n" +
             "left join tb_role_perm tbrp on tbr.id = tbrp.role_id\n" +
