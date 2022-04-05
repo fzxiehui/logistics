@@ -11,7 +11,7 @@ public enum EnumErrorCode {
     /**
      * 请求成功
      */
-    success(0, "请求成功")
+    success(0, "Success")
     /**
      * 请求失败
      */

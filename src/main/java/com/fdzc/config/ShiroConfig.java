@@ -29,7 +29,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
     /**
-     * 先走 filter ，然后 filter 如果检测到请求头存在 token，则用 token 去 login，走 Realm 去验证
+     * 先走 filter ，然后 filter 如果检测到请求头存在 token，则用 token 去 login，走 Realm 去验证。
      */
     @Bean
     public ShiroFilterFactoryBean factory(SecurityManager securityManager) {
@@ -40,6 +40,7 @@ public class ShiroConfig {
         filterMap.put("jwt", new JWTFilter());
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(securityManager);
+        factoryBean.setLoginUrl("/notLogin");
         // 设置无权限时跳转的 url;
         factoryBean.setUnauthorizedUrl("/unauthorized/无权限");
         Map<String, String> filterRuleMap = new HashMap<>();
@@ -48,8 +49,24 @@ public class ShiroConfig {
         // 访问 /unauthorized/** 不通过JWTFilter
         filterRuleMap.put("/unauthorized/**", "anon");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
-        return factoryBean;
 
+//        //配置权限的类型
+//        Map<String,String> filterMap = new LinkedHashMap<String,String>();
+//        filterMap.put("/user/add","e-perms[user:people]");
+//        filterMap.put("/admin/*","e-perms[user:admin|user:controller]");
+//        //配置页面访问权限,正常情况下未授权会跳转到未授权页面
+//        filterMap.put("/my/*","authc");
+//        filterMap.put("/center/*","authc");
+//        //设置登录的请求
+//        bean.setLoginUrl("/toLogin");
+//        //设置未授权的请求页面
+//        bean.setUnauthorizedUrl("/noauth");
+//
+//        //把权限配置放到bean中
+//        bean.setFilterChainDefinitionMap(filterMap);
+
+
+        return factoryBean;
     }
 
     /**

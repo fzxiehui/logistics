@@ -7,10 +7,10 @@ public class SystemContent {
     public static final String USERLOGIN = "userLogin";
     //数据提交时返回的信息
     public static final String MESSAGE = "message";
-    public static final String SUCCESS = "success";
+    public static final String SUCCESS = "操作成功";
+    public static final String FAIL = "操作失败";
 
     public static final String PHONE = "18930300365";
     public static final String IDENTITY = "312522233332321312";
-
 
 }

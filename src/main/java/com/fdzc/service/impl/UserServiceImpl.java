@@ -1,8 +1,11 @@
 package com.fdzc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fdzc.mapper.RoleMapper;
 import com.fdzc.mapper.UserMapper;
+import com.fdzc.pojo.Role;
 import com.fdzc.pojo.User;
+import com.fdzc.service.RoleService;
 import com.fdzc.service.UserService;
 import com.fdzc.utils.PasswordUtil;
 import com.fdzc.utils.SystemContent;
@@ -18,6 +21,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     //通过登录名查询用户
     @Override
@@ -43,4 +49,38 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
+    @Override
+    public int activeUser(Integer id) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus(1);
+        return userMapper.updateById(user);
+    }
+
+    @Override
+    public List<User> selectAll() {
+        return userMapper.selectList(null);
+    }
+
+    @Override
+    public int deleteUserById(Integer id) {
+        roleMapper.deleteUserAndRole(id);
+        return userMapper.deleteById(id);
+    }
+
+    @Override
+    public int checkUserRoles(Integer id) {
+        List<Role> roles = roleMapper.getUserRolesByUserId(id);
+        return roles.size();
+    }
+
+    @Override
+    public int addUser(User user) {
+        return userMapper.insert(user);
+    }
+
+    @Override
+    public int addRole(Integer userId, Integer roleId) {
+        return roleMapper.inserUserAndRole(userId,roleId);
+    }
 }
