@@ -58,7 +58,7 @@ public class UserController{
         }
     }
 
-    @ApiOperation("添加用户")
+    @ApiOperation("更新用户")
     @PostMapping("/updateUser")
     public Result updateUser(@RequestBody String jsonBody){
         UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);

@@ -40,6 +40,8 @@ public class User implements Serializable {
     private Date createTime;
 
     @ApiModelProperty("逻辑删除")
+    @TableLogic
+    @TableField(value = "deleted")
     private int deleted;
 
 }

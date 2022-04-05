@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
         user.setRealname(userVo.getRealname());
         user.setSalt(UUIDUtils.randomUUID());
         user.setPassword(PasswordUtil.md5(user.getPassword(),user.getSalt(),SystemContent.COUNT_TIMES));
+        user.setStatus(userVo.getStatus());
         int count = 0;
         if(userMapper.updateById(user)>0){
             roleMapper.deleteUserAndRole(user.getId());

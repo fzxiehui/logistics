@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleVo {
 
-    private Integer roleId;
+    private Integer id;
 
     private Integer value;
 

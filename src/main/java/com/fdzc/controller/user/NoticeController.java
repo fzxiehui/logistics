@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,9 @@ public class NoticeController {
         return Result.ok(noticeList);
     }
 
-    @RequiresRoles("admin")
-    @ApiOperation("公告添加处理接口")
+    @ApiOperation("公告发布处理接口")
     @PostMapping("/addNotice")
+    @RequiresRoles(logical = Logical.OR, value = {"logistics", "admin","user"})
     public Result addArticle(@RequestBody String noticeStr){
         Notice notice = JSON.parseObject(noticeStr,Notice.class);
         if (noticeService.addNotice(notice)>0){
@@ -56,11 +57,13 @@ public class NoticeController {
         }
     }
 
-    @RequiresRoles("admin")
     @ApiOperation("公告删除处理接口")
     @PostMapping("/deleteNotice")
-    public Result deleteArticle(Integer id){
-
+    @RequiresRoles(logical = Logical.OR, value = {"logistics", "admin","user"})
+    public Result deleteArticle(@RequestBody String idstr){
+        JSONObject jsonObject = JSONObject.parseObject(idstr);
+        String string = jsonObject.getString("id");
+        Integer id = Integer.parseInt(string);
         if (noticeService.deleteNoticeById(id)>0){
             return Result.ok(SystemContent.SUCCESS);
         }else {
@@ -68,9 +71,9 @@ public class NoticeController {
         }
     }
 
-    @RequiresRoles("admin")
     @ApiOperation("公告修改处理接口")
     @PostMapping("/updateNotice")
+    @RequiresRoles(logical = Logical.OR, value = {"logistics", "admin","user"})
     public Result updateArticle(@RequestBody String noticeStr){
         Notice notice = JSON.parseObject(noticeStr,Notice.class);
         if (noticeService.updateNotice(notice)>0){

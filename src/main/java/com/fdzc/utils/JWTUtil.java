@@ -22,6 +22,8 @@ public class JWTUtil {
     private static final long EXPIRE_TIME = 60 * 24 * 60 * 1000;
     // 密钥
     private static final String SECRET = "SHIRO+JWT";
+    // 失效密钥
+    private static final String UNSECRET = "SHIRO-JWT";
 
     /**
      * 生成 token, 5min后过期
@@ -33,6 +35,28 @@ public class JWTUtil {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            // 附带username信息
+            return JWT.create()
+                    .withClaim("username", username)
+                    //到期时间
+                    .withExpiresAt(date)
+                    //创建一个新的JWT，并使用给定的算法进行标记
+                    .sign(algorithm);
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 生成 token, 5min后过期
+     *
+     * @param username 用户名
+     * @return 加密的token
+     */
+    public static String createEXToken(String username) {
+        try {
+            Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+            Algorithm algorithm = Algorithm.HMAC256(UNSECRET);
             // 附带username信息
             return JWT.create()
                     .withClaim("username", username)

@@ -45,6 +45,7 @@ public class Logistics implements Serializable {
 
     @ApiModelProperty("逻辑删除")
     @TableField(value = "deleted")
+    @TableLogic
     private int deleted;
 
 }

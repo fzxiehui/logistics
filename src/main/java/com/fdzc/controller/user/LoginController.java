@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -138,17 +139,20 @@ public class LoginController {
 
     @ApiOperation("退出登录的请求")
     @GetMapping("/logout")
-    public Result logout(){
+    @ResponseBody
+    public Result logout(HttpServletRequest request){
         //获取当前用户
-        Subject subject = SecurityUtils.getSubject();
+        String token = request.getHeader("token");
+        String username = JWTUtil.getUsername(token);
+        JWTUtil.createEXToken(username);
         //退出登录
-        subject.logout();
 //        //获取当前用户
 //        //获取session
 //        Session session = subject.getSession();
 //        //销毁session
 //        session.removeAttribute(SystemContent.USERLOGIN);
-        return Result.fail();
+        //生成的将生成的token的签名更改
+        return Result.fail("退出成功");
     }
 
     @ApiOperation("获取所有类型的请求")
