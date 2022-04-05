@@ -30,11 +30,10 @@ public class User implements Serializable {
     private String salt;
     @ApiModelProperty("jwt盐值")
     private String jwtSecret;
-    @ApiModelProperty("电话")
-    private String phone;
     @ApiModelProperty("激活状态")
     private Integer status;
-
+    @ApiModelProperty("激活状态")
+    private String realname;
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")

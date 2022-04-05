@@ -3,9 +3,12 @@ package com.fdzc;
 import com.alibaba.fastjson.JSONObject;
 import com.fdzc.mapper.PermissionMapper;
 import com.fdzc.mapper.RoleMapper;
+import com.fdzc.mapper.UserMapper;
 import com.fdzc.pojo.*;
 import com.fdzc.service.*;
-import com.fdzc.utils.Result;
+import com.fdzc.utils.*;
+import com.fdzc.vo.RoleVo;
+import com.fdzc.vo.UserVo;
 import com.github.pagehelper.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,10 @@ import java.util.Set;
 
 @SpringBootTest
 class SpringbootMSystemApplicationTests {
+
+
+    @Autowired
+    UserMapper userMapper;
 
     @Autowired
     RoleMapper roleMapper;
@@ -42,8 +49,16 @@ class SpringbootMSystemApplicationTests {
 
     @Test
     void contextLoads() {
-        List<Role> roles = roleMapper.getUserRolesByUserId(1);
-        System.out.println(roles);
+        List<RoleVo> type = roleService.getHomeUserType();
+        System.out.println(type);
+        System.out.println("=========================");
+    }
+
+    @Test
+    void contextLoads2() {
+        int i = roleMapper.getRoleByUserPhone("111");
+        System.out.println(i);
+        System.out.println("=========================");
     }
 
     @Test
@@ -56,10 +71,10 @@ class SpringbootMSystemApplicationTests {
 
     @Test
     void test2(){
-        List<Logistics> logisticsList = logisticsService.selectLogistics(null);
-        String jsonString = JSONObject.toJSONString(logisticsList);
-        System.out.println(jsonString);
-        System.out.println("========================");
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDkyNDgyMDksInVzZXJuYW1lIjoiMTExIn0.uWI9SoHDTxF4xguGTFzBdYBRuGC3f5RaWvTeXKFK38M";
+        String username = JWTUtil.getUsername(token);
+        System.out.println(username);
+
     }
 
 

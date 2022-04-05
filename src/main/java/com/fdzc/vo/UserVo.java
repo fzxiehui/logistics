@@ -1,10 +1,13 @@
 package com.fdzc.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fdzc.pojo.User;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -12,18 +15,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVo extends User {
+public class UserVo {
 
-    private Integer page;
+    private Integer id;
 
-    private Integer limit;
+    private String username;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date startTime;//开始日期
+    private String password;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date endTime;//结束日期
+    private String realname;
 
+    private Integer status;
+
+    private Integer type;
 }

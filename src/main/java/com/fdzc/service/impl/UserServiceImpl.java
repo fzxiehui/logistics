@@ -5,11 +5,11 @@ import com.fdzc.mapper.RoleMapper;
 import com.fdzc.mapper.UserMapper;
 import com.fdzc.pojo.Role;
 import com.fdzc.pojo.User;
-import com.fdzc.service.RoleService;
 import com.fdzc.service.UserService;
 import com.fdzc.utils.PasswordUtil;
 import com.fdzc.utils.SystemContent;
 import com.fdzc.utils.UUIDUtils;
+import com.fdzc.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,18 +33,19 @@ public class UserServiceImpl implements UserService {
 
     //用户注册的方法
     @Override
-    public int userRegister(User user) {
-        int count = 0;
-        //设置用户的权限
-        user.setPhone(SystemContent.PHONE);
-        //给用户的账号进行加密
-        //设置用户加密的颜盐值
+    public int userRegister(UserVo userVo) {
+        User user = new User();
+        user.setUsername(userVo.getUsername());
+        user.setPassword(userVo.getPassword());
+        user.setRealname(userVo.getRealname());
         user.setSalt(UUIDUtils.randomUUID());
         user.setPassword(PasswordUtil.md5(user.getPassword(),user.getSalt(),SystemContent.COUNT_TIMES));
         user.setJwtSecret("123@qwe");
+        int count = 0;
         if(userMapper.insert(user)>0){
             User userR = userMapper.selectOne(new QueryWrapper<User>().eq("username", user.getUsername()));
-            count = 1;
+            int i = roleMapper.inserUserAndRole(userR.getId(), userVo.getType());
+            count = i;
         }
         return count;
     }
@@ -82,5 +83,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addRole(Integer userId, Integer roleId) {
         return roleMapper.inserUserAndRole(userId,roleId);
+    }
+
+    @Override
+    public User selectUserByPhone(String phone) {
+        return userMapper.selectOne(new QueryWrapper<User>().eq("phone",phone));
+    }
+
+    @Override
+    public List<UserVo> selectUser() {
+        return userMapper.selectAllUser();
+    }
+
+    @Override
+    public int userUpdate(UserVo userVo) {
+        User user = new User();
+        user.setId(userVo.getId());
+        user.setUsername(userVo.getUsername());
+        user.setPassword(userVo.getPassword());
+        user.setRealname(userVo.getRealname());
+        user.setSalt(UUIDUtils.randomUUID());
+        user.setPassword(PasswordUtil.md5(user.getPassword(),user.getSalt(),SystemContent.COUNT_TIMES));
+        int count = 0;
+        if(userMapper.updateById(user)>0){
+            roleMapper.deleteUserAndRole(user.getId());
+            int i = roleMapper.inserUserAndRole(user.getId(), userVo.getType());
+            count = i;
+        }
+        return count;
     }
 }

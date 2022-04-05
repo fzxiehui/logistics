@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fdzc.pojo.Logistics;
 import com.fdzc.pojo.Notice;
 import com.fdzc.pojo.User;
 import com.fdzc.service.NoticeService;
@@ -46,7 +47,8 @@ public class NoticeController {
     @RequiresRoles("admin")
     @ApiOperation("公告添加处理接口")
     @PostMapping("/addNotice")
-    public Result addArticle(@ApiParam("前台传入新增article文章参数") Notice notice){
+    public Result addArticle(@RequestBody String noticeStr){
+        Notice notice = JSON.parseObject(noticeStr,Notice.class);
         if (noticeService.addNotice(notice)>0){
             return Result.ok(SystemContent.SUCCESS);
         }else {
@@ -57,7 +59,7 @@ public class NoticeController {
     @RequiresRoles("admin")
     @ApiOperation("公告删除处理接口")
     @PostMapping("/deleteNotice")
-    public Result deleteArticle(@ApiParam("前台传入新增article文章参数id") Integer id){
+    public Result deleteArticle(Integer id){
 
         if (noticeService.deleteNoticeById(id)>0){
             return Result.ok(SystemContent.SUCCESS);
@@ -69,7 +71,8 @@ public class NoticeController {
     @RequiresRoles("admin")
     @ApiOperation("公告修改处理接口")
     @PostMapping("/updateNotice")
-    public Result updateArticle(@ApiParam("前台传入新增article文章参数") Notice notice){
+    public Result updateArticle(@RequestBody String noticeStr){
+        Notice notice = JSON.parseObject(noticeStr,Notice.class);
         if (noticeService.updateNotice(notice)>0){
             return Result.ok(SystemContent.SUCCESS);
         }else {

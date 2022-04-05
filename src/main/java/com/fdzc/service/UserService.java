@@ -2,6 +2,7 @@ package com.fdzc.service;
 
 
 import com.fdzc.pojo.User;
+import com.fdzc.vo.UserVo;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface UserService {
     User selectUserByName(String name);
 
     //用户注册的方法
-    int userRegister(User user);
+    int userRegister(UserVo userVo);
 
     //激活角色
     int activeUser(Integer id);
@@ -29,4 +30,10 @@ public interface UserService {
 
     //给用户添加角色
     int addRole(Integer userId, Integer roleId);
+
+    User selectUserByPhone(String phone);
+
+    List<UserVo> selectUser();
+
+    int userUpdate(UserVo userVo);
 }
