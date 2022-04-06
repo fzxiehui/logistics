@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
             int i = roleMapper.inserUserAndRole(userR.getId(), userVo.getType());
             count = i;
         }
-        return count;
+        return user.getId();
     }
 
     @Override

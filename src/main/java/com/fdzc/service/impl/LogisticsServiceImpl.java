@@ -37,7 +37,8 @@ public class LogisticsServiceImpl implements LogisticsService {
 
     @Override
     public int addLogistics(Logistics logistics) {
-        return logisticsMapper.insert(logistics);
+        logisticsMapper.insert(logistics);
+        return logistics.getId();
     }
 
     @Override

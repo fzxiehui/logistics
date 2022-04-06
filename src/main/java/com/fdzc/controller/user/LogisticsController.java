@@ -14,11 +14,13 @@ import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "物流权限接口")
 @RestController
-@RequestMapping("/logistics")
+@RequestMapping("/api/logistics")
 public class LogisticsController {
 
     @Autowired
@@ -42,8 +44,10 @@ public class LogisticsController {
     public Result increaseLogistic(@RequestBody String logisticsString){
         Logistics logistics = JSON.parseObject(logisticsString,Logistics.class);
         int count = logisticsService.addLogistics(logistics);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("id",count);
         if (count > 0){
-            return Result.ok();
+            return Result.ok(map);
         }else{
             return Result.fail();
         }

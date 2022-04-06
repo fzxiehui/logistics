@@ -26,7 +26,7 @@ import java.util.Map;
 
 @Api(tags = "用户权限接口")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiresRoles(logical = Logical.OR, value = {"user", "admin"})
 public class UserController{
 
@@ -37,8 +37,11 @@ public class UserController{
     @PostMapping("/addUser")
     public Result addUser(@RequestBody String jsonBody){
         UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);
-        if (userService.userRegister(userVo)>0){
-            return Result.ok();
+        int register = userService.userRegister(userVo);
+        if (register > 0){
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("id",register);
+            return Result.ok(map);
         }else {
             return Result.fail();
         }
@@ -89,7 +92,10 @@ public class UserController{
 
     @ApiOperation("根据id激活用户")
     @GetMapping("/activeUser")
-    public Result activeUser(Integer id){
+    public Result activeUser(@RequestBody String idstr){
+        JSONObject jsonObject = JSONObject.parseObject(idstr);
+        String string = jsonObject.getString("id");
+        Integer id = Integer.parseInt(string);
         userService.activeUser(id);
         return Result.ok();
     }

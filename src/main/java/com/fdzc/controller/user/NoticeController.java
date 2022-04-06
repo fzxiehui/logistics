@@ -32,7 +32,7 @@ import java.util.Map;
 
 @Api(tags = "公告表")
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/api/notice")
 public class NoticeController {
 
     @Autowired
@@ -48,10 +48,11 @@ public class NoticeController {
     @ApiOperation("公告发布处理接口")
     @PostMapping("/addNotice")
     @RequiresRoles(logical = Logical.OR, value = {"logistics", "admin","user"})
-    public Result addArticle(@RequestBody String noticeStr){
+    public Result<Notice> addArticle(@RequestBody String noticeStr){
         Notice notice = JSON.parseObject(noticeStr,Notice.class);
-        if (noticeService.addNotice(notice)>0){
-            return Result.ok(SystemContent.SUCCESS);
+        notice = noticeService.addNotice(notice);
+        if ( notice != null){
+            return Result.ok(notice);
         }else {
             return Result.fail(SystemContent.FAIL);
         }

@@ -36,6 +36,8 @@ import java.util.*;
 
 @Api(tags = "登录控制")
 @Controller
+@ResponseBody
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
@@ -109,21 +111,19 @@ public class LoginController {
         return JSON.parseObject(JSON.toJSONString(map));
     }
 
-    @ApiOperation("用户注册")
+
+    @ApiOperation("添加用户")
     @PostMapping("/register")
     @ResponseBody
-    public JSONObject register(@RequestBody String jsonBody){
+    public Result registerUser(@RequestBody String jsonBody){
         UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(userService.userRegister(userVo)>0){
-            map.put(SystemContent.SUCCESS,true);
-            map.put(SystemContent.MESSAGE,"注册成功");
-        }else{
-            map.put(SystemContent.SUCCESS,true);
-            map.put(SystemContent.MESSAGE,"注册失败");
+        if (userService.userRegister(userVo) > 0){
+            return Result.ok();
+        }else {
+            return Result.fail();
         }
-        return JSON.parseObject(JSON.toJSONString(map));
     }
+
 
     @ApiOperation("跳转登录页面")
     @GetMapping("/toLogin")

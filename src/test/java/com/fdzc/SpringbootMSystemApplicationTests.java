@@ -130,8 +130,8 @@ class SpringbootMSystemApplicationTests {
         Notice notice = new Notice();
         notice.setContent("大厦是公dfshdfhdshdfhdh司的撒大dfhsddfgfdgdh噶的s十多sdhfdhdf个撒大都市asdgasdgsdgsagsda");
         notice.setTitle("修山豆根时地 告士刁改");
-        int i = noticeService.addNotice(notice);
-        System.out.println("=========="+i+"============");
+        noticeService.addNotice(notice);
+        System.out.println("=========="+"============");
     }
 
 
