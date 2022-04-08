@@ -5,6 +5,7 @@ import com.fdzc.mapper.LogisticsMapper;
 import com.fdzc.mapper.RoleMapper;
 import com.fdzc.pojo.Logistics;
 import com.fdzc.service.LogisticsService;
+import com.fdzc.vo.LogisticsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,18 @@ public class LogisticsServiceImpl implements LogisticsService {
     @Override
     public int deleteLogisticsById(Integer id) {
         return logisticsMapper.deleteById(id);
+    }
+
+    @Override
+    public List<LogisticsVo> getCensus() {
+
+        return logisticsMapper.getCensus();
+
+    }
+
+    @Override
+    public List<LogisticsVo> getTop() {
+        return logisticsMapper.getTop();
     }
 
 }

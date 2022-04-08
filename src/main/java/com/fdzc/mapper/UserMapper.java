@@ -13,9 +13,10 @@ import java.util.List;
 @Component
 public interface UserMapper extends BaseMapper<User> {
 
-    @Select("select tu.id,username,status,realname,role_id as type from tb_user tu\n" +
+    @Select("select tu.id,username,status,realname,role_id as type from tb_user tu \n" +
             "left join tb_user_role tur\n" +
-            "on tu.id = tur.user_id")
+            "on tu.id = tur.user_id\n" +
+            "where deleted = 0")
     @Results({
             @Result(property = "id",  column = "id"),
             @Result(property = "username", column = "username"),

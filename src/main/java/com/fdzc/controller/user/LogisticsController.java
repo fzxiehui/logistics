@@ -6,6 +6,7 @@ import com.fdzc.pojo.Logistics;
 import com.fdzc.service.LogisticsService;
 import com.fdzc.utils.JWTUtil;
 import com.fdzc.utils.Result;
+import com.fdzc.vo.LogisticsVo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -76,6 +77,27 @@ public class LogisticsController {
             return Result.ok("ok");
         }else{
             return Result.fail();
+        }
+    }
+
+    @GetMapping("/getLogisticCensus")
+    public Result<List<LogisticsVo>> getLogisticCensus(){
+
+        List<LogisticsVo> list = logisticsService.getCensus();
+        if (list.size() >0){
+            return Result.ok(list);
+        }else {
+            return Result.fail("没有数据");
+        }
+    }
+
+    @GetMapping("/getTop")
+    public Result getTop(){
+        List<LogisticsVo> list = logisticsService.getTop();
+        if (list.size() >0){
+            return Result.ok(list);
+        }else {
+            return Result.fail("没有数据");
         }
     }
 
