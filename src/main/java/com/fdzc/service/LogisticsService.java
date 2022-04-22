@@ -1,12 +1,13 @@
 package com.fdzc.service;
 
 import com.fdzc.pojo.Logistics;
+import com.fdzc.vo.LogisticsVo;
 
 import java.util.List;
 
 public interface LogisticsService {
 
-    //通过手机号模糊查询
+    //通过查询用户
     List<Logistics> selectLogistics(String owner);
 
     //添加物流信息
@@ -17,4 +18,8 @@ public interface LogisticsService {
 
     //删除物流信息
     int deleteLogisticsById(Integer id);
+
+    List<LogisticsVo> getCensus();
+
+    List<LogisticsVo> getTop();
 }

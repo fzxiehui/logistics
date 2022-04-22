@@ -1,11 +1,13 @@
 package com.fdzc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fdzc.mapper.PermissionMapper;
-import com.fdzc.mapper.RoleMapper;
+import com.fdzc.mapper.*;
 import com.fdzc.pojo.*;
 import com.fdzc.service.*;
-import com.fdzc.utils.Result;
+import com.fdzc.utils.*;
+import com.fdzc.vo.RoleVo;
+import com.fdzc.vo.TripVo;
+import com.fdzc.vo.UserVo;
 import com.github.pagehelper.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ import java.util.Set;
 
 @SpringBootTest
 class SpringbootMSystemApplicationTests {
+
+
+    @Autowired
+    UserMapper userMapper;
 
     @Autowired
     RoleMapper roleMapper;
@@ -39,11 +45,31 @@ class SpringbootMSystemApplicationTests {
     @Autowired
     LogisticsService logisticsService;
 
+    @Autowired
+    TripMapper tripMapper;
+
+    @Autowired
+    PersonMapper personMapper;
+
+    @Autowired
+    TripService tripService;
+
+    @Autowired
+    PersonService personService;
+
 
     @Test
     void contextLoads() {
-        List<Role> roles = roleMapper.getUserRolesByUserId(1);
-        System.out.println(roles);
+        List<RoleVo> type = roleService.getHomeUserType();
+        System.out.println(type);
+        System.out.println("=========================");
+    }
+
+    @Test
+    void contextLoads2() {
+        int i = roleMapper.getRoleByUserPhone("111");
+        System.out.println(i);
+        System.out.println("=========================");
     }
 
     @Test
@@ -56,10 +82,10 @@ class SpringbootMSystemApplicationTests {
 
     @Test
     void test2(){
-        List<Logistics> logisticsList = logisticsService.selectLogistics(null);
-        String jsonString = JSONObject.toJSONString(logisticsList);
-        System.out.println(jsonString);
-        System.out.println("========================");
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDkyNDgyMDksInVzZXJuYW1lIjoiMTExIn0.uWI9SoHDTxF4xguGTFzBdYBRuGC3f5RaWvTeXKFK38M";
+        String username = JWTUtil.getUsername(token);
+        System.out.println(username);
+
     }
 
 
@@ -115,15 +141,24 @@ class SpringbootMSystemApplicationTests {
         Notice notice = new Notice();
         notice.setContent("大厦是公dfshdfhdshdfhdh司的撒大dfhsddfgfdgdh噶的s十多sdhfdhdf个撒大都市asdgasdgsdgsagsda");
         notice.setTitle("修山豆根时地 告士刁改");
-        int i = noticeService.addNotice(notice);
-        System.out.println("=========="+i+"============");
+        noticeService.addNotice(notice);
+        System.out.println("=========="+"============");
     }
-
 
     @Test
     void test7(){
         List<Logistics> logisticsList = logisticsService.selectLogistics("18930300365");
         System.out.println(logisticsList);
     }
+
+
+    @Test
+    void test8(){
+
+        List<TripVo> tripVoList = personService.selectAll();
+        System.out.println(tripVoList);
+
+    }
+
 
 }

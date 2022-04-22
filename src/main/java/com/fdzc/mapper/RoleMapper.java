@@ -2,6 +2,7 @@ package com.fdzc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fdzc.pojo.Role;
+import com.fdzc.vo.RoleVo;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
@@ -32,4 +33,21 @@ public interface RoleMapper extends BaseMapper<Role> {
     @Insert("insert into `tb_user_role`(user_id,role_id) values(#{userId},#{roleId})")
     public int inserUserAndRole(Integer userId,Integer roleId);
 
-    }
+
+    @Select("select role_id,count(*) as nums from `tb_user_role` tbr\n" +
+            "left join tb_role tr\n" +
+            "on role_id = tr.id\n" +
+            "group by role_id\n" +
+            "having role_id <> 1")
+    @Results({
+            @Result(property = "value",  column = "nums"),
+            @Result(property = "id", column = "role_id")})
+    List<RoleVo> getHomeUserType();
+
+    @Select("select tur.role_id from tb_user tu,tb_user_role tur\n" +
+            "where tu.id = tur.user_id\n" +
+            "and tu.username = #{username}")
+    public int getRoleByUserPhone(String username);
+
+
+}

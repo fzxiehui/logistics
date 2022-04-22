@@ -2,6 +2,7 @@ package com.fdzc.controller.user;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fdzc.pojo.Logistics;
 import com.fdzc.pojo.Role;
 import com.fdzc.pojo.User;
 import com.fdzc.service.RoleService;
@@ -10,6 +11,8 @@ import com.fdzc.utils.JWTUtil;
 import com.fdzc.utils.PasswordUtil;
 import com.fdzc.utils.Result;
 import com.fdzc.utils.SystemContent;
+import com.fdzc.vo.RoleVo;
+import com.fdzc.vo.UserVo;
 import com.fdzc.vo.tokenVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,15 +28,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(tags = "登录控制")
 @Controller
+@ResponseBody
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
@@ -62,11 +66,23 @@ public class LoginController {
     @ApiOperation("验证用户登录")
     @PostMapping("/login")
     @ResponseBody
-    public Result login(@RequestParam("username") String username, @RequestParam("password") String password, Model model, HttpSession session){
+    public Result login(@RequestBody String userparms){
+        Map<String,Object> map = new HashMap<String,Object>();
+        User user = JSON.parseObject(userparms,User.class);
+//        String username = user.getUsername();
+        String password = user.getPassword();
+        String username = user.getUsername();
         //从SecurityUtils创建一个subject
         Subject subject = SecurityUtils.getSubject();
+//        User userlogin = userService.selectUserByPhone(phone);
         User userlogin = userService.selectUserByName(username);
         password= PasswordUtil.md5(password, userlogin.getSalt(), SystemContent.COUNT_TIMES);
+        List<Role> roles = roleService.getUserRolesByUserId(userlogin.getId());
+        Role role = roles.get(0);
+        Integer type = role.getId();
+        map.put("type",type);
+        map.put("realname",userlogin.getRealname());
+        map.put("token",JWTUtil.createToken(username));
 //        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 //        try{
 //            subject.login(token);
@@ -78,19 +94,7 @@ public class LoginController {
 //            e.printStackTrace();
 //            return Result.fail("其他错误");
 //        }
-        return Result.ok(JWTUtil.createToken(username));
-//        List<Role> roles = roleService.getUserRolesByUserId(userlogin.getId());
-//        for (Role role : roles) {
-//            if ("user".equals(role.getRoleName())) {
-//                return Result.ok("欢迎登陆");
-//            }
-//            if ("admin".equals(role.getRoleName())) {
-//                return Result.ok("欢迎来到管理员页面");
-//            }
-//        }
-
-//        return Result.ok("登录成功");
-
+        return Result.ok(map);
     }
 
     @ApiOperation("检测用户名是存在")
@@ -107,30 +111,25 @@ public class LoginController {
         return JSON.parseObject(JSON.toJSONString(map));
     }
 
-    @ApiOperation("用户注册")
+
+    @ApiOperation("添加用户")
     @PostMapping("/register")
     @ResponseBody
-    public JSONObject register(@RequestParam("loginName") String username,@RequestParam("password") String password){
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(userService.userRegister(user)>0){
-            map.put(SystemContent.SUCCESS,true);
-            map.put(SystemContent.MESSAGE,"注册成功");
-        }else{
-            map.put(SystemContent.SUCCESS,true);
-            map.put(SystemContent.MESSAGE,"注册失败");
+    public Result registerUser(@RequestBody String jsonBody){
+        UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);
+        if (userService.userRegister(userVo) > 0){
+            return Result.ok();
+        }else {
+            return Result.fail();
         }
-        return JSON.parseObject(JSON.toJSONString(map));
     }
+
 
     @ApiOperation("跳转登录页面")
     @GetMapping("/toLogin")
     public String login(){
         return "font/login/login";
     }
-
 
     @ApiOperation("访问权限不足的页面提醒")
     @RequestMapping("/noauth")
@@ -140,18 +139,28 @@ public class LoginController {
 
     @ApiOperation("退出登录的请求")
     @GetMapping("/logout")
-    public String logout(){
+    @ResponseBody
+    public Result logout(HttpServletRequest request){
         //获取当前用户
-        Subject subject = SecurityUtils.getSubject();
+        String token = request.getHeader("token");
+        String username = JWTUtil.getUsername(token);
+        JWTUtil.createEXToken(username);
         //退出登录
-        subject.logout();
-        //获取当前用户
-        //获取session
-        Session session = subject.getSession();
-        //销毁session
-        session.removeAttribute(SystemContent.USERLOGIN);
-        return "redirect:/";
+//        //获取当前用户
+//        //获取session
+//        Session session = subject.getSession();
+//        //销毁session
+//        session.removeAttribute(SystemContent.USERLOGIN);
+        //生成的将生成的token的签名更改
+        return Result.fail("退出成功");
     }
 
+    @ApiOperation("获取所有类型的请求")
+    @GetMapping("/getHomeUserType")
+    @ResponseBody
+    public Result<List<RoleVo>> getHomeUserType(){
+        List<RoleVo> roleVoList = roleService.getHomeUserType();
+        return Result.ok(roleVoList);
+    }
 
 }

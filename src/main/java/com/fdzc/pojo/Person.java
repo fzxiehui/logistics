@@ -1,6 +1,5 @@
 package com.fdzc.pojo;
 
-
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -13,20 +12,36 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel("用户实体类")
+@ApiModel("用户表")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_notice")
-public class Notice implements Serializable {
+@TableName("tb_person")
+public class Person implements Serializable {
 
-    @ApiModelProperty("id")
+    @ApiModelProperty("用户id")
     @TableId(type = IdType.AUTO)
     private Integer id;
-    @ApiModelProperty("公告标题")
-    private String title;
-    @ApiModelProperty("公告内容")
-    private String content;
+    @ApiModelProperty("用户姓名")
+    private String name;
+    @ApiModelProperty("用户电话")
+    private String phone;
+
+    @ApiModelProperty("用户类型")
+    private Integer type;
+
+    @ApiModelProperty("是否高危")
+    private Integer danger;
+
+    @ApiModelProperty("核酸")
+    private Integer nucleic;
+
+    @ApiModelProperty("疫苗")
+    private Integer vaccine;
+
+    @ApiModelProperty("审核状态")
+    @TableField(value = "`check`")
+    private Integer check;
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -34,8 +49,9 @@ public class Notice implements Serializable {
     private Date createTime;
 
     @ApiModelProperty("逻辑删除")
-    @TableField(value = "deleted")
     @TableLogic
+    @TableField(value = "deleted")
     private int deleted;
+
 
 }

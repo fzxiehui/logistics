@@ -1,6 +1,8 @@
 package com.fdzc.controller.user;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,16 +18,15 @@ import io.swagger.models.auth.In;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "用户权限接口")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiresRoles(logical = Logical.OR, value = {"user", "admin"})
 public class UserController{
 
@@ -34,10 +35,13 @@ public class UserController{
 
     @ApiOperation("添加用户")
     @PostMapping("/addUser")
-    public Result addUser(User user){
-        int count = userService.addUser(user);
-        if (count > 0){
-            return Result.ok();
+    public Result addUser(@RequestBody String jsonBody){
+        UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);
+        int register = userService.userRegister(userVo);
+        if (register > 0){
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("id",register);
+            return Result.ok(map);
         }else {
             return Result.fail();
         }
@@ -45,7 +49,10 @@ public class UserController{
 
     @ApiOperation("删除用户")
     @PostMapping("/deleteUser")
-    public Result deleteUser(Integer id){
+    public Result deleteUser(@RequestBody String idstr){
+        JSONObject jsonObject = JSONObject.parseObject(idstr);
+        String string = jsonObject.getString("id");
+        Integer id = Integer.parseInt(string);
         int count = userService.deleteUserById(id);
         if (count > 0){
             return Result.ok();
@@ -54,10 +61,15 @@ public class UserController{
         }
     }
 
-    @ApiOperation("更新用户和分配角色")
+    @ApiOperation("更新用户")
     @PostMapping("/updateUser")
-    public Result updateUser(){
-        return Result.ok();
+    public Result updateUser(@RequestBody String jsonBody){
+        UserVo userVo = JSONObject.parseObject(jsonBody,UserVo.class);
+        if (userService.userUpdate(userVo)>0){
+            return Result.ok();
+        }else {
+            return Result.fail();
+        }
     }
 
     @ApiOperation("添加用户角色")
@@ -73,14 +85,17 @@ public class UserController{
 
     @ApiOperation("查询所有用户")
     @GetMapping("/selectUser")
-    public Result<List<User>> selectUser(){
-        List<User> userList= userService.selectAll();
+    public Result<List<UserVo>> selectUser(){
+        List<UserVo> userList= userService.selectUser();
         return Result.ok(userList);
     }
 
     @ApiOperation("根据id激活用户")
     @GetMapping("/activeUser")
-    public Result activeUser(Integer id){
+    public Result activeUser(@RequestBody String idstr){
+        JSONObject jsonObject = JSONObject.parseObject(idstr);
+        String string = jsonObject.getString("id");
+        Integer id = Integer.parseInt(string);
         userService.activeUser(id);
         return Result.ok();
     }

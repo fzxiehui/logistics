@@ -9,7 +9,7 @@ public interface NoticeService {
     List<Notice> selectAllPage();
 
     //添加公告
-    int addNotice(Notice notice);
+    Notice addNotice(Notice notice);
 
     //删除公告
     int deleteNoticeById(Integer id);

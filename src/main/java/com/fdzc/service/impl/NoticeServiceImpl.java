@@ -25,8 +25,9 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public int addNotice(Notice notice) {
-        return noticeMapper.insert(notice);
+    public Notice addNotice(Notice notice) {
+        noticeMapper.insert(notice);
+        return notice;
     }
 
     @Override
