@@ -1,13 +1,12 @@
 package com.fdzc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fdzc.mapper.PermissionMapper;
-import com.fdzc.mapper.RoleMapper;
-import com.fdzc.mapper.UserMapper;
+import com.fdzc.mapper.*;
 import com.fdzc.pojo.*;
 import com.fdzc.service.*;
 import com.fdzc.utils.*;
 import com.fdzc.vo.RoleVo;
+import com.fdzc.vo.TripVo;
 import com.fdzc.vo.UserVo;
 import com.github.pagehelper.Page;
 import org.junit.jupiter.api.Test;
@@ -45,6 +44,18 @@ class SpringbootMSystemApplicationTests {
 
     @Autowired
     LogisticsService logisticsService;
+
+    @Autowired
+    TripMapper tripMapper;
+
+    @Autowired
+    PersonMapper personMapper;
+
+    @Autowired
+    TripService tripService;
+
+    @Autowired
+    PersonService personService;
 
 
     @Test
@@ -134,11 +145,20 @@ class SpringbootMSystemApplicationTests {
         System.out.println("=========="+"============");
     }
 
-
     @Test
     void test7(){
         List<Logistics> logisticsList = logisticsService.selectLogistics("18930300365");
         System.out.println(logisticsList);
     }
+
+
+    @Test
+    void test8(){
+
+        List<TripVo> tripVoList = personService.selectAll();
+        System.out.println(tripVoList);
+
+    }
+
 
 }
